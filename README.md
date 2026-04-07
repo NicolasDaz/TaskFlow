@@ -9,7 +9,7 @@
 \# Integrantes
 
 * Daza Nicolas Esteban
-* Diaz Dominguez Romina Sofia
+* Dominguez Romina Sofia
 * Diaz Fernando
 * Casto Jonathan Emanuel
 * Gimenez Blas
