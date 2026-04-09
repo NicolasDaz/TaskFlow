@@ -1,16 +1,10 @@
-﻿using TaskFlow.Services;
-namespace TaskFlow
+﻿namespace TaskFlow
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            TaskService service = new TaskService();
-
-            Console.WriteLine("===== TaskFlow =====");
-            Console.WriteLine("Listando tareas...\n");
-
-            service.ListarTareas();
+            Console.WriteLine("Hello, World!");
         }
     }
 }
