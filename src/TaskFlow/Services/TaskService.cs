@@ -1,29 +1,45 @@
 ﻿using TaskFlow.Models;
 using TaskFlow.Utils;
 
-public class TaskService
+namespace TaskFlow.Services
 {
-    public void CrearTarea() { }
-
-    public void ListarTareas()
+    public class TaskService
     {
-    }
+        public void CrearTarea() { }
 
-    public void ListarTareasPorEstado(Status estado)
-    {
-        List<TaskItem> tareas = FileManager.cargar();
-        List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
-
-        if (filtradas.Count == 0)
+        public void ListarTareas()
         {
-            Console.WriteLine($"No hay tareas con estado: {estado}");
-            return;
+            List<TaskItem> tareas = FileManager.cargar();
+
+            if (tareas.Count == 0)
+            {
+                Console.WriteLine("No hay tareas registradas.");
+                return;
+            }
+
+            Console.WriteLine($"\n===== LISTA DE TAREAS ({tareas.Count}) =====\n");
+            foreach (TaskItem tarea in tareas)
+            {
+                Console.WriteLine(tarea.ToString());
+            }
         }
 
-        Console.WriteLine($"\n===== TAREAS {estado.ToString().ToUpper()} ({filtradas.Count}) =====\n");
-        foreach (TaskItem tarea in filtradas)
+        public void ListarTareasPorEstado(Status estado)
         {
-            Console.WriteLine(tarea.ToString());
+            List<TaskItem> tareas = FileManager.cargar();
+            List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
+
+            if (filtradas.Count == 0)
+            {
+                Console.WriteLine($"No hay tareas con estado: {estado}");
+                return;
+            }
+
+            Console.WriteLine($"\n===== TAREAS {estado.ToString().ToUpper()} ({filtradas.Count}) =====\n");
+            foreach (TaskItem tarea in filtradas)
+            {
+                Console.WriteLine(tarea.ToString());
+            }
         }
     }
 }
