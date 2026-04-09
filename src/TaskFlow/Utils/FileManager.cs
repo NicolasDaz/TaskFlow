@@ -9,7 +9,7 @@ using TaskFlow.Models;
 
 namespace TaskFlow.Utils
 {
-    public class FileManager
+    public static class FileManager
     {
         public static readonly string carpetaData = Path.Combine(Directory.GetCurrentDirectory(), "Data");
         public static readonly string rutaArchivo = Path.Combine(carpetaData, "tasks.json");
@@ -20,7 +20,7 @@ namespace TaskFlow.Utils
             Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
         };
 
-        public List<TaskItem> cargar() {
+        public static List<TaskItem> cargar() {
             try
             {
                 ExisteArchivo();
@@ -41,7 +41,7 @@ namespace TaskFlow.Utils
 
         }
 
-        public bool Guardar(List<TaskItem> tareas)
+        public static bool Guardar(List<TaskItem> tareas)
         {
             try
             {
