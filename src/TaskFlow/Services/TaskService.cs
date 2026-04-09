@@ -11,6 +11,5 @@ namespace TaskFlow.Service.cs
     
     public class TaskService
     {
-        public CrearTarea() { }
     }
 }
