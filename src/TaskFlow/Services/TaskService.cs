@@ -1,27 +1,29 @@
 ﻿using TaskFlow.Models;
 using TaskFlow.Utils;
 
-namespace TaskFlow.Service.cs
+public class TaskService
 {
-    public class TaskService
+    public void CrearTarea() { }
+
+    public void ListarTareas()
     {
-        public void CrearTarea() { }
+    }
 
-        public void ListarTareas()
+    public void ListarTareasPorEstado(Status estado)
+    {
+        List<TaskItem> tareas = FileManager.cargar();
+        List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
+
+        if (filtradas.Count == 0)
         {
-            List<TaskItem> tareas = FileManager.cargar();
+            Console.WriteLine($"No hay tareas con estado: {estado}");
+            return;
+        }
 
-            if (tareas.Count == 0)
-            {
-                Console.WriteLine("No hay tareas registradas.");
-                return;
-            }
-
-            Console.WriteLine($"\n===== LISTA DE TAREAS ({tareas.Count}) =====\n");
-            foreach (TaskItem tarea in tareas)
-            {
-                Console.WriteLine(tarea.ToString());
-            }
+        Console.WriteLine($"\n===== TAREAS {estado.ToString().ToUpper()} ({filtradas.Count}) =====\n");
+        foreach (TaskItem tarea in filtradas)
+        {
+            Console.WriteLine(tarea.ToString());
         }
     }
 }
