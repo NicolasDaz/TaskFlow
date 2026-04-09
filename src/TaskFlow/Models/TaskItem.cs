@@ -25,7 +25,8 @@ namespace TaskFlow.Models
 
         public override string ToString()
         {
-            return $"id:{Id}\n";
+
+            return $"id:{Id}\nTitulo:{Title}\nDescripción:{(string.IsNullOrEmpty(Description) ? "Sin Descripción" : Description)}\nEstado:{CambioEstado()}\nCreación:{CreateAt.ToString("G")}\nActualización:{(UpdateAt.HasValue ? UpdateAt.Value.ToString("G") : "-")}\n--------------------------------------------------";
 
         }
 
