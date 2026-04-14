@@ -20,7 +20,7 @@ namespace TaskFlow.Utils
             Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
         };
 
-        public static List<TaskItem> cargar() {
+        public static List<TaskItem> Cargar() {
             try
             {
                 ExisteArchivo();
