@@ -13,24 +13,25 @@ namespace TaskFlow.Service.cs
     {
 
         public List<TaskItem> Tareas = FileManager.cargar();
-        public void CrearTarea()
+        public TaskItem? CrearTarea(string titulo, string descripción, string responsable)
         {
             TaskItem tarea = new TaskItem();
             try
             {
-                Console.WriteLine("Ingrese el título de la tarea:");
-                tarea.Title = Console.ReadLine();
-                Console.WriteLine("Ingrese la descripción de la tarea (opcional):");
-                tarea.Description = Console.ReadLine();
-                Console.WriteLine("Ingrese el responsable de la tarea:");
-                tarea.Responsible = Console.ReadLine();
                 tarea.Id = GenerarId();
+                tarea.Title = titulo;
+                tarea.Description = descripción;
+                tarea.Responsible = responsable;
+                tarea.Estado = Status.Pendiente;
+                tarea.CreateAt = DateTime.Now;
                 Tareas.Add(tarea);
-                Console.WriteLine("Tarea creada exitosamente.");
+                FileManager.Guardar(Tareas);
+                return tarea;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error se ha encontrado un error {ex.Message}");
+                Console.WriteLine($"Error se ha encontrado un error al crear la tarea {ex.Message}");
+                return null;
             }
         }
 
