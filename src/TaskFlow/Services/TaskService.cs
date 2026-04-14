@@ -1,11 +1,12 @@
-﻿using TaskFlow.Models;
+﻿using System.Threading.Tasks;
+using TaskFlow.Models;
 using TaskFlow.Utils;
 
 namespace TaskFlow.Services
 {
     public class TaskService
     {
-        public List<TaskItem> Tareas = FileManager.Cargar();
+        private List<TaskItem> tareas = FileManager.Cargar();
         public TaskItem? CrearTarea(string titulo, string descripción, string responsable)
         {
             TaskItem tarea = new TaskItem();
@@ -17,8 +18,7 @@ namespace TaskFlow.Services
                 tarea.Responsible = responsable;
                 tarea.Estado = Status.Pendiente;
                 tarea.CreateAt = DateTime.Now;
-                Tareas.Add(tarea);
-                FileManager.Guardar(Tareas);
+                tareas.Add(tarea);
                 return tarea;
             }
             catch (Exception ex)
@@ -29,13 +29,11 @@ namespace TaskFlow.Services
         }
         public int GenerarId()
         {
-            if (Tareas.Count == 0) return 1;
-            return Tareas.Max(t => t.Id) + 1;
+            if (tareas.Count == 0) return 1;
+            return tareas.Max(t => t.Id) + 1;
         }
         public void ListarTareas()
         {
-            List<TaskItem> tareas = FileManager.Cargar();
-
             if (tareas.Count == 0)
             {
                 Console.WriteLine("No hay tareas registradas.");
@@ -51,7 +49,6 @@ namespace TaskFlow.Services
 
         public void ListarTareasPorEstado(Status estado)
         {
-            List<TaskItem> tareas = FileManager.Cargar();
             List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
 
             if (filtradas.Count == 0)
@@ -64,6 +61,22 @@ namespace TaskFlow.Services
             foreach (TaskItem tarea in filtradas)
             {
                 Console.WriteLine(tarea.ToString());
+            }
+        }
+        public void UpdateTaskStatus(int id, Status newStatus)
+        {
+            var tarea = tareas.FirstOrDefault(t => t.Id == id);
+
+
+            if (tarea != null)
+            {
+                tarea.Estado = newStatus;
+                tarea.UpdateAt = DateTime.Now;
+                Console.WriteLine("Estado actualizado correctamente!");
+            }
+            else
+            {
+                Console.WriteLine("No se encontro la tarea");
             }
         }
     }
