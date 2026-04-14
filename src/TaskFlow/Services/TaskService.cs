@@ -5,7 +5,7 @@ namespace TaskFlow.Services
 {
     public class TaskService
     {
-        public List<TaskItem> Tareas = FileManager.cargar();
+        public List<TaskItem> Tareas = FileManager.Cargar();
         public TaskItem? CrearTarea(string titulo, string descripción, string responsable)
         {
             TaskItem tarea = new TaskItem();
@@ -34,7 +34,7 @@ namespace TaskFlow.Services
         }
         public void ListarTareas()
         {
-            List<TaskItem> tareas = FileManager.cargar();
+            List<TaskItem> tareas = FileManager.Cargar();
 
             if (tareas.Count == 0)
             {
@@ -51,7 +51,7 @@ namespace TaskFlow.Services
 
         public void ListarTareasPorEstado(Status estado)
         {
-            List<TaskItem> tareas = FileManager.cargar();
+            List<TaskItem> tareas = FileManager.Cargar();
             List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
 
             if (filtradas.Count == 0)
