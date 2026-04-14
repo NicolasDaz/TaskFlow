@@ -19,7 +19,7 @@ las tecnologías usadas en este sistema son Git, GitHub, C# y Visual Studio.
 * Diaz Fernando
 * Casto Jonathan Emanuel
 * Gimenez Blas
-
+* Bellido Javier 
 
 
 
