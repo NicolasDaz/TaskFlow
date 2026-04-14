@@ -1,27 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TaskFlow.Models;
 using TaskFlow.Utils;
 
-namespace TaskFlow.Service
+namespace TaskFlow.Services
 {
-    
     public class TaskService
     {
-        private List<TaskItem> tasks = new List<TaskItem>();
+        private List<TaskItem> tareas = FileManager.Cargar();
+        public TaskItem? CrearTarea(string titulo, string descripción, string responsable)
+        {
+            TaskItem tarea = new TaskItem();
+            try
+            {
+                tarea.Id = GenerarId();
+                tarea.Title = titulo;
+                tarea.Description = descripción;
+                tarea.Responsible = responsable;
+                tarea.Estado = Status.Pendiente;
+                tarea.CreateAt = DateTime.Now;
+                tareas.Add(tarea);
+                return tarea;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error se ha encontrado un error al crear la tarea {ex.Message}");
+                return null;
+            }
+        }
+        public int GenerarId()
+        {
+            if (tareas.Count == 0) return 1;
+            return tareas.Max(t => t.Id) + 1;
+        }
+        public void ListarTareas()
+        {
+            if (tareas.Count == 0)
+            {
+                Console.WriteLine("No hay tareas registradas.");
+                return;
+            }
 
+            Console.WriteLine($"\n===== LISTA DE TAREAS ({tareas.Count}) =====\n");
+            foreach (TaskItem tarea in tareas)
+            {
+                Console.WriteLine(tarea.ToString());
+            }
+        }
+
+        public void ListarTareasPorEstado(Status estado)
+        {
+            List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
+
+            if (filtradas.Count == 0)
+            {
+                Console.WriteLine($"No hay tareas con estado: {estado}");
+                return;
+            }
+
+            Console.WriteLine($"\n===== TAREAS {estado.ToString().ToUpper()} ({filtradas.Count}) =====\n");
+            foreach (TaskItem tarea in filtradas)
+            {
+                Console.WriteLine(tarea.ToString());
+            }
+        }
         public void UpdateTaskStatus(int id, Status newStatus)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            var tarea = tareas.FirstOrDefault(t => t.Id == id);
 
 
-            if (task != null)
+            if (tarea != null)
             {
-                task.Estado = newStatus;
-                task.UpdateAt = DateTime.Now;
+                tarea.Estado = newStatus;
+                tarea.UpdateAt = DateTime.Now;
                 Console.WriteLine("Estado actualizado correctamente!");
             }
             else
