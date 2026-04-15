@@ -79,19 +79,19 @@ namespace TaskFlow.Services
                 Console.WriteLine("No se encontro la tarea");
             }
         }
-        public void EliminarTarea(int id)
+        public bool EliminarTarea(int id)
         {
-            var tarea = tareas.FirstOrDefault(t => t.Id == id);
-            if (tarea != null)
+            if (tareas == null) throw new InvalidOperationException("La lista de tareas no está inicializada.");
+            var index = tareas.FindIndex(t => t.Id == id);
+            if (index >= 0)
             {
-                tareas.Remove(tarea);
+                tareas.RemoveAt(index);
                 Console.WriteLine("Tarea eliminada correctamente!");
-            }
-            else
-            {
-                Console.WriteLine("No se encontro la tarea");
+                return true;
             }
 
+            Console.WriteLine("No se encontró la tarea");
+            return false;
         }
     }
 }
