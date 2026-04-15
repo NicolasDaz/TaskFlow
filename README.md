@@ -14,12 +14,12 @@ las tecnologías usadas en este sistema son Git, GitHub, C# y Visual Studio.
 
 \# Integrantes
 
-* Daza Nicolas Esteban
-* Dominguez Romina Sofia
-* Diaz Fernando
-* Casto Jonathan Emanuel
-* Gimenez Blas
-* Bellido Javier 
+* BELLIDO, Javier Ignacio
+* CASTRO, Jonathan Emanuel
+* DAZA Nicolas Esteban
+* DIAZ CASTILLO, Fernando David
+* DOMINGUEZ, Romina Sofia
+* GIMENEZ, Blas
 
 
 
