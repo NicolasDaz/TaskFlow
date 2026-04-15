@@ -79,19 +79,29 @@ namespace TaskFlow.Services
                 Console.WriteLine("No se encontro la tarea");
             }
         }
-        public void EliminarTarea(int id)
+        public bool EliminarTareaPorId(int id)
         {
             var tarea = tareas.FirstOrDefault(t => t.Id == id);
-            if (tarea != null)
+            if (tarea == null)
             {
-                tareas.Remove(tarea);
+                Console.WriteLine("No se encontró la tarea");
+                return false;
+            }
+
+            tareas.Remove(tarea);
+
+            // Intentar guardar cambios en disco; informar si falla.
+            bool guardado = FileManager.Guardar(tareas);
+            if (guardado)
+            {
                 Console.WriteLine("Tarea eliminada correctamente!");
             }
             else
             {
-                Console.WriteLine("No se encontro la tarea");
+                Console.WriteLine("Tarea eliminada, pero no se pudo guardar en disco.");
             }
 
+            return true;
         }
     }
 }
