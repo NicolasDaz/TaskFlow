@@ -93,5 +93,18 @@ namespace TaskFlow.Services
             Console.WriteLine("No se encontró la tarea");
             return false;
         }
+        public bool GuardarTareas()
+        {
+            bool resultado = FileManager.Guardar(tareas);
+            if (resultado)
+            {
+                Console.WriteLine("Tareas guardadas correctamente!");
+            }
+            else
+            {
+                Console.WriteLine("No fue posible guardar las tareas.");
+            }
+            return resultado;
+        }
     }
 }
