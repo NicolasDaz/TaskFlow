@@ -79,6 +79,7 @@ namespace TaskFlow.Services
                 Console.WriteLine("No se encontro la tarea");
             }
         }
+<<<<<<< feature/menu-tareas
 <<<<<<< HEAD
         public void EliminarTarea(int id)
         {
@@ -121,5 +122,21 @@ namespace TaskFlow.Services
             return true;
         }
 >>>>>>> 47f49be5ed8511a600063a02ee4e5119233de645
+=======
+        public bool EliminarTarea(int id)
+        {
+            if (tareas == null) throw new InvalidOperationException("La lista de tareas no está inicializada.");
+            var index = tareas.FindIndex(t => t.Id == id);
+            if (index >= 0)
+            {
+                tareas.RemoveAt(index);
+                Console.WriteLine("Tarea eliminada correctamente!");
+                return true;
+            }
+
+            Console.WriteLine("No se encontró la tarea");
+            return false;
+        }
+>>>>>>> devop
     }
 }
