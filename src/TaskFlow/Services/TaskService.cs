@@ -79,50 +79,6 @@ namespace TaskFlow.Services
                 Console.WriteLine("No se encontro la tarea");
             }
         }
-<<<<<<< feature/menu-tareas
-<<<<<<< HEAD
-        public void EliminarTarea(int id)
-        {
-            var tarea = tareas.FirstOrDefault(t => t.Id == id);
-            if (tarea != null)
-            {
-                tareas.Remove(tarea);
-                FileManager.Guardar(tareas);
-                Console.WriteLine("Tarea eliminada correctamente.");
-            }
-            else
-            {
-                Console.WriteLine("No se encontró la tarea con el ID especificado.");
-            }
-        }
-
-=======
-        public bool EliminarTareaPorId(int id)
-        {
-            var tarea = tareas.FirstOrDefault(t => t.Id == id);
-            if (tarea == null)
-            {
-                Console.WriteLine("No se encontró la tarea");
-                return false;
-            }
-
-            tareas.Remove(tarea);
-
-            // Intentar guardar cambios en disco; informar si falla.
-            bool guardado = FileManager.Guardar(tareas);
-            if (guardado)
-            {
-                Console.WriteLine("Tarea eliminada correctamente!");
-            }
-            else
-            {
-                Console.WriteLine("Tarea eliminada, pero no se pudo guardar en disco.");
-            }
-
-            return true;
-        }
->>>>>>> 47f49be5ed8511a600063a02ee4e5119233de645
-=======
         public bool EliminarTarea(int id)
         {
             if (tareas == null) throw new InvalidOperationException("La lista de tareas no está inicializada.");
@@ -137,6 +93,18 @@ namespace TaskFlow.Services
             Console.WriteLine("No se encontró la tarea");
             return false;
         }
->>>>>>> devop
+        public bool GuardarTareas()
+        {
+            bool resultado = FileManager.Guardar(tareas);
+            if (resultado)
+            {
+                Console.WriteLine("Tareas guardadas correctamente!");
+            }
+            else
+            {
+                Console.WriteLine("No fue posible guardar las tareas.");
+            }
+            return resultado;
+        }
     }
 }
