@@ -26,12 +26,12 @@ namespace TaskFlow.Utils
                 ExisteArchivo();
                 string archivo = File.ReadAllText(rutaArchivo);
 
-                if (string.IsNullOrEmpty(archivo))
+                if (string.IsNullOrWhiteSpace(archivo))
                 {
                     return new List<TaskItem>();
                 }
 
-                return JsonSerializer.Deserialize<List<TaskItem>>(archivo);
+                return JsonSerializer.Deserialize<List<TaskItem>>(archivo, Options);
 
             }catch(Exception ex)
             {
