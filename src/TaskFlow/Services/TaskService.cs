@@ -6,12 +6,16 @@ namespace TaskFlow.Services
 {
     public class TaskService
     {
-        private List<TaskItem> tareas = FileManager.Cargar();
+        private List<TaskItem> tareas;
+
+        public TaskService()
+        {
+            tareas = CargarTareas();
+        }
         public TaskItem? CrearTarea(string titulo, string descripción, string responsable)
         {
             TaskItem tarea = new TaskItem();
-            try
-            {
+
                 tarea.Id = GenerarId();
                 tarea.Title = titulo;
                 tarea.Description = descripción;
@@ -19,92 +23,84 @@ namespace TaskFlow.Services
                 tarea.Estado = Status.Pendiente;
                 tarea.CreateAt = DateTime.Now;
                 tareas.Add(tarea);
-                return tarea;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error se ha encontrado un error al crear la tarea {ex.Message}");
-                return null;
-            }
+                GuardarCambios();
+            return tarea;
         }
         public int GenerarId()
         {
             if (tareas.Count == 0) return 1;
             return tareas.Max(t => t.Id) + 1;
         }
-        public void ListarTareas()
+        public List<TaskItem> ListarTareas()
         {
-            if (tareas.Count == 0)
-            {
-                Console.WriteLine("No hay tareas registradas.");
-                return;
-            }
-
-            Console.WriteLine($"\n===== LISTA DE TAREAS ({tareas.Count}) =====\n");
-            foreach (TaskItem tarea in tareas)
-            {
-                Console.WriteLine(tarea.ToString());
-            }
+            return tareas;
         }
 
-        public void ListarTareasPorEstado(Status estado)
+        public List<TaskItem> ListarTareasPorEstado(Status estado)
         {
             List<TaskItem> filtradas = tareas.Where(t => t.Estado == estado).ToList();
 
             if (filtradas.Count == 0)
             {
-                Console.WriteLine($"No hay tareas con estado: {estado}");
-                return;
+                throw new ArgumentNullException($"No hay tareas con estado: {estado}");
             }
 
-            Console.WriteLine($"\n===== TAREAS {estado.ToString().ToUpper()} ({filtradas.Count}) =====\n");
-            foreach (TaskItem tarea in filtradas)
-            {
-                Console.WriteLine(tarea.ToString());
-            }
+            return filtradas;
         }
         public void UpdateTaskStatus(int id, Status newStatus)
         {
-            var tarea = tareas.FirstOrDefault(t => t.Id == id);
-
-
-            if (tarea != null)
-            {
-                tarea.Estado = newStatus;
-                tarea.UpdateAt = DateTime.Now;
-                Console.WriteLine("Estado actualizado correctamente!");
+            if (id == 0) {
+                throw new ArgumentException("El ID no puede ser nulo o cero.");
             }
-            else
+            TaskItem? tarea = tareas.FirstOrDefault(t => t.Id == id);
+
+            if (tarea == null)
             {
-                Console.WriteLine("No se encontro la tarea");
+                throw new KeyNotFoundException($"No se encontró la tarea con ID: {id}");
             }
+
+            tarea.Estado = newStatus;
+            tarea.UpdateAt = DateTime.Now;
+            GuardarCambios();
+
+        }
+
+        public void UpdateTaskResponsible(int id, string newResponsible)
+        {
+            if (id == 0) {
+                throw new ArgumentException("El ID no puede ser nulo o cero.");
+            }
+            TaskItem? tarea = tareas.FirstOrDefault(t => t.Id == id);
+
+            if (tarea == null)
+            {
+                throw new KeyNotFoundException($"No se encontró la tarea con ID: {id}");
+            }
+
+            tarea.Responsible = newResponsible;
+            tarea.UpdateAt = DateTime.Now;
+            GuardarCambios();
         }
         public bool EliminarTarea(int id)
         {
-            if (tareas == null) throw new InvalidOperationException("La lista de tareas no está inicializada.");
-            var index = tareas.FindIndex(t => t.Id == id);
+            if (id == 0) throw new ArgumentException("El ID no puede ser nulo o cero.");
+            int index = tareas.FindIndex(t => t.Id == id);
             if (index >= 0)
             {
                 tareas.RemoveAt(index);
-                Console.WriteLine("Tarea eliminada correctamente!");
+                GuardarCambios();
                 return true;
             }
-
-            Console.WriteLine("No se encontró la tarea");
             return false;
         }
-        public bool GuardarTareas()
+
+        private void GuardarCambios()
         {
-            bool resultado = FileManager.Guardar(tareas);
-            if (resultado)
-            {
-                Console.WriteLine("Tareas guardadas correctamente!");
-            }
-            else
-            {
-                Console.WriteLine("No fue posible guardar las tareas.");
-            }
-            return resultado;
+            FileManager.Guardar(tareas);
+        }
+        private List<TaskItem> CargarTareas()
+        {
+            return FileManager.Cargar();
         }
     }
 }
